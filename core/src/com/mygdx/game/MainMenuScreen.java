@@ -5,11 +5,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenuScreen implements Screen {
@@ -17,6 +21,7 @@ public class MainMenuScreen implements Screen {
     final Drop game;
     OrthographicCamera camera;
     //private Stage stage;
+    private Label outputLabel;
 
     public MainMenuScreen(final Drop gam){
         game = gam;
@@ -48,26 +53,45 @@ public class MainMenuScreen implements Screen {
 //        stage.addActor(label4);
 
         // make a button....
-        Button button = new TextButton("Play", mySkin, "default");
-        button.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/20);
-        button.setPosition(Gdx.graphics.getWidth()-100, 150);
+        Button button1 = new TextButton("Play", mySkin, "default");
+        button1.setSize(Gdx.graphics.getWidth()/8, Gdx.graphics.getHeight()/15);
+        button1.setPosition(Gdx.graphics.getWidth()-150, 150);
         // addListener.....
-        // TODO
+        button1.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                outputLabel.setText("Press a button");
+            }
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                outputLabel.setText("Pressed Text Button");
+                return true;
+            }
+        });
+        //label
+        outputLabel = new Label("Press a Button",mySkin,"default");
+        outputLabel.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()/12);
+        outputLabel.setPosition(0, Gdx.graphics.getHeight()/15);
+        outputLabel.setAlignment(Align.center);
 
         game.batch.begin();
-        //game.batch.draw(skinReg, 100, 200);
-        //game.batch.draw(label1, 100, 200);
         label1.draw(game.batch, 1);
         game.font2.draw(game.batch, "Welcome to Drop!!! ", 100, 200);
         //game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
         game.font2.draw(game.batch, "Tap anywhere to begin!", 100, 150);
-        button.draw(game.batch, 1);
+        outputLabel.draw(game.batch, 1);
+        button1.draw(game.batch, 1);
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
             game.setScreen(new MyGdxGame(game));
             dispose();
         }
+//        if (button1.isPressed()){
+//            game.setScreen(new MyGdxGame(game));
+//            dispose();
+//        }
+
     }
 
     @Override
@@ -92,6 +116,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        //game.dispose();
     }
 
 }
