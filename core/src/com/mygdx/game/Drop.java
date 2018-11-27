@@ -31,6 +31,8 @@ public class Drop extends Game {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        font2.dispose();
+        mySkin.dispose();
     }
 
 }
